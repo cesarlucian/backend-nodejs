@@ -1,37 +1,17 @@
-# Backend Node.js <img src="https://www.moovin.com.br/assets/images/svg/logo2.svg" width="50">
+- Este projeto não possui interação com banco de dados.
 
-### Desafio
+- Este projeto não possui validações de número de conta corrente ou conta poupança pois iria desviar o objetivo do teste.
 
-Desenvolver uma solução em formato de API com a utilização de node.js e Typescript.
+- As contas geradas e números verificadores são números aleatórios.
 
-### Como realizar
+- Este projeto não possui hash de senha pois iria desviar o objetivo do teste não sendo esse um dos requisitos, como tela de login por exemplo.
 
-Faça o fork do repositório, realize os seus commits e ao final envie o link do seu repositório para o e-mail rh@moovin.com.br. Este repositório já possui uma base para iniciar o desenvolvimento, utilize-a como achar necessário. 
+- Este projeto possui validações básicas de login, não possui criptografias e servem apenas para a conclusão do teste.
 
-Para iniciar você deve instalar as dependências:
-```zsh
-  foo@bar:~$ npm i
-```
-Em seguida você poderá executar exemplos de utilização do sistema criado através do comando:
-```zsh
-  foo@bar:~$ npm run dev
-```
+- A unica função ou linha de código que não foi de minha autoria, foi a função "validCPF" no arquivo openaccount.ts, pois peguei pronta na internet. Pode ser encontrada em: https://github.com/luis-ten/validar-cpf
 
-### Instruções
+- As contas e dados são salvos em um localStorage chamado "tbClientes" e a validação de login é feita apenas verificando se existe o registro no mesmo.
 
-Em um pequeno país do planeta Cyber, a moeda vigente é o biteris cuja sigla é B$.
+-
 
-Você precisa desenvolver um algoritmo para um caixa eletrônico, seguindo os requisitos descritos abaixo:
-
-- O banco possui dois tipos de conta: Conta Corrente e Conta Poupança;
-- Limite de Saque: B$ 600,00;
-- Cada operação de Saque possui uma taxa de operação que deve ser descontado do saldo: B$ 0,30;
-- O recurso de Depósito deve receber um código de conta e o valor a ser depositado;
-- O recurso de Saque deve receber um código de conta e o valor a ser retirado além de validar se a conta possui saldo e se o valor não excede o limite;
-
-> **ATENÇÃO**: Não é necessário realizar interação com banco de dados (opcional).
-
-### Dúvidas
-
-Em caso de dúvida entre em contato pelo skype **matheusmoovin**
-
+Obs: utilizei o comando tsc nos arquivos typescript para realizar testes no navegador.

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    
+    <script>
+      var session    = localStorage.getItem('login');
+ 
+      if(typeof session === "undefined" || session === "" || session === null)
+      {
+        window.location.replace("login.html");
+      }
+    </script>
+    
+    <title>Banco Central Cyber</title>
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+        <form id="transaction">
+          <div class="pb-5 py-5 text-center">
+            <h5>Banco Central Cyber</h5>
+            <p>Preencha os campos abaixo para realizar um depósito ou saque bancário(B$).</p>
+            <p><b>Uma taxa de B$ 0,30 será cobrada para saques.</b></p>
+            <a onclick="localStorage.removeItem('login'); window.location.replace('/login.html');" href="#">Sair</a>
+          </div>
+
+          <div id="alert-success" class="alert alert-success hide" role="alert">
+          </div>
+
+          <div id="alert-error" class="alert alert-danger hide">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <span class="msg">Error</span>
+          </div>
+
+          <div id="alert-success-value" class="alert alert-success" role="alert">
+            Valor dísponivel para saque: B$ 0,00
+          </div>
+
+          <div id="alert-warning" class="alert alert-warning" role="alert">
+            Limite de saque hoje: B$ 600,00 
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+            <div class="form-group">
+              <label for="transactiontype">Tipo de Transação</label>
+              <select type="text" class="form-control" id="transactiontype" name="transactiontype" required>
+                <option value="">Selecione</option>
+                <option value="0">Depósito</option>
+                <option value="1">Saque</option>
+              </select>
+            </div>
+           </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="accounttype">Tipo de Conta</label>
+                <select type="text" class="form-control" id="accounttype" name="accounttype" required>
+                  <option value="">Selecione</option>
+                  <option value="0">Conta Corrente</option>
+                  <option value="1">Conta Poupança</option>
+                </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="amount">Valor</label>
+                <input type="text" class="form-control money" id="amount" name="amount" placeholder="Valor" required>
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4">
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Efetuar Transação</button>
+        </form>
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+    <script>
+      $(document).ready(function(){
+        
+        $('.money').mask('000.000.000.000.000,00', {reverse: true});
+
+        var session            = localStorage.getItem('login');
+        
+        // Valores
+        if(localStorage.getItem(session+'withdrawvalue'))
+        {
+          var withdrawvalue = parseFloat(localStorage.getItem(session+'withdrawvalue'));
+          document.getElementById("alert-success-value").innerHTML = "Valor dísponivel para saque: B$ " + withdrawvalue.toLocaleString('pt-br', {minimumFractionDigits: 2});
+        }
+        else
+        {
+          var withdrawvalue = 0;
+        }
+
+        if(localStorage.getItem(session+'withdrawlimitvalue'))
+        {
+          var withdrawlimitvalue = parseFloat(localStorage.getItem(session+'withdrawlimitvalue'));
+          document.getElementById("alert-warning").innerHTML = "Limite de saque hoje: B$ "+withdrawlimitvalue.toLocaleString('pt-br', {minimumFractionDigits: 2});
+        }
+        else
+        {
+          var withdrawlimitvalue = parseFloat("600");
+        }
+
+        var error              = localStorage.getItem("error"); 
+        var success            = localStorage.getItem("success"); 
+
+        if(error)
+        {
+          var diverror = document.getElementById("alert-error");
+          diverror.innerHTML = error;
+
+          $("#alert-error").removeClass("hide");
+          $("#alert-error").fadeOut(6000);
+
+          localStorage.setItem("error", ""); 
+          return false;
+        }
+
+        if(success)
+        {
+            document.getElementById("alert-success-value").innerHTML = "Valor dísponivel para saque: B$ " + withdrawvalue.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById("alert-warning").innerHTML = "Limite de saque hoje: B$ "+withdrawlimitvalue.toLocaleString('pt-br', {minimumFractionDigits: 2});
+
+            var divsucess = document.getElementById("alert-success");
+            divsucess.innerHTML = success;
+
+            $("#alert-success").removeClass("hide");
+            $("#alert-success").fadeOut(10000);
+
+            localStorage.setItem("success", ""); 
+            return true;
+        }
+      });
+    </script>
+  </body>
+</html>
